@@ -93,6 +93,25 @@ const API_BASE_URL = "http://localhost:8080";
             alert("개정판을 입력해주세요.");
             return false;
         }
+
+        const isbnPattern = /^\d{13}$/;
+        if (!isbnPattern.test(book.isbn)) {
+            alert("올바른 isbn 형식이 아닙니다.");
+            return false;
+        }
+
+        if (book.price && book.price < 0 ) {
+            alert("올바른 가격이 아닙니다.");
+            return false;
+        }
+        if (book.pageCnt && book.pageCnt < 0 ) {
+            alert("올바른 페이지 수가 아닙니다.");
+            return false;
+        }
+        if (book.edition && book.edition <= 0 ) {
+            alert("올바른 개정판 형식이 아닙니다.");
+            return false;
+        }
     
         return true;
     }
