@@ -46,34 +46,6 @@ studentForm.addEventListener("submit", function (event) {
 
 });
 
-function createStudent(studentData){
-    fetch(`${API_BASE_URL}/api/students`, {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(studentData)
-    })
-    .then(async(response) => {
-        if(!response.ok){
-            const errorData = await response.json();
-            if(response.status === 409){  //더 자세히 비교
-                throw new Error(errorData.message||"중복되는 정보가 있습니다.");
-            }else{
-                throw new Error(errorData.message||"학생 등록에 실패했습니다.")
-            }
-        }
-        return response.json();
-    })
-    .then((result) => {
-        alert("학생이 성공적으로 등록되었습니다!");
-        studentForm.reset();
-        loadStudents();
-    })
-    .catch((error) => {
-        console.log("error: ",error);
-        alert(error.message);
-    });
-}
-
 //데이터 유효성을 체크하는 함수
 function validateStudent(student) {// 필수 필드 검사
     if (!student.name) {
@@ -171,4 +143,53 @@ function renderStudentTable(students) {
         //<tbody>의 아래에 <tr>을 추가시켜 준다.
         studentTableBody.appendChild(row);
     });
+}
+
+function createStudent(studentData){
+    fetch(`${API_BASE_URL}/api/students`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(studentData)
+    })
+    .then(async(response) => {
+        if(!response.ok){
+            const errorData = await response.json();
+            if(response.status === 409){  //더 자세히 비교
+                throw new Error(errorData.message||"중복되는 정보가 있습니다.");
+            }else{
+                throw new Error(errorData.message||"학생 등록에 실패했습니다.")
+            }
+        }
+        return response.json();
+    })
+    .then((result) => {
+        alert("학생이 성공적으로 등록되었습니다!");
+        studentForm.reset();
+        loadStudents();
+    })
+    .catch((error) => {
+        console.log("error: ",error);
+        alert(error.message);
+    });
+}
+
+function deleteStudent(studentId){
+    if(!confirm(`ID = ${studentId} 인 학생을 삭제하시겠습니까?`)){
+        return;
+    }
+    fetch(`${API_BASE_URL}/api/students/${studentId}`,{
+        method: 'DELETE'
+    })
+    .then(async(response) => {
+        if(!response.ok){
+            const errorData = await response.json();
+            if(response.status === 404){  //더 자세히 비교
+                throw new Error(errorData.message||"존재하지 않는 학생입니다.");
+            }else{
+                throw new Error(errorData.message||"학생 삭제에 실패했습니다.");
+            }
+        }
+        alert("학생이 성공적으로 삭제되었습니다!");
+        loadStudents();
+    })
 }
