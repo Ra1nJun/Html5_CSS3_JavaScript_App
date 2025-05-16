@@ -33,7 +33,7 @@ studentForm.addEventListener("submit", function (event) {
     console.log(studentData);
 }); 
 
-function validateStudent(){
+function validateStudent(student){
     if (!student.name) {
         alert("이름을 입력해주세요.");
         return false;
