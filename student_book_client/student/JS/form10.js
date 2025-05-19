@@ -116,7 +116,7 @@ function loadStudents() {
     fetch(`${API_BASE_URL}/api/students`) //Promise
         .then((response) => {
             if (!response.ok) {
-                throw new Error("학생 목록을 불러오는데 실패했습니다!");
+                showError("학생 목록을 불러오는데 실패했습니다!");
             }
             return response.json();
         })
@@ -171,13 +171,13 @@ function createStudent(studentData){
         return response.json();
     })
     .then((result) => {
-        alert("학생이 성공적으로 등록되었습니다!");
+        showSuccess("학생이 성공적으로 등록되었습니다!");
         resetForm();
         loadStudents();
     })
     .catch((error) => {
         console.log("error: ",error);
-        alert(error.message);
+        showError(error.message);
     });
 }
 
@@ -197,12 +197,12 @@ function deleteStudent(studentId){
                 throw new Error(errorData.message||"학생 삭제에 실패했습니다.");
             }
         }
-        alert("학생이 성공적으로 삭제되었습니다!");
+        showSuccess("학생이 성공적으로 삭제되었습니다!");
         loadStudents();
     })
     .catch((error) => {
         console.log("error: ",error);
-        alert(error.message);
+        showError(error.message);
     });
 }
 
@@ -233,7 +233,7 @@ function editStudent(studentId){
     })
     .catch((error) => {
         console.log("error: ",error);
-        alert(error.message);
+        showError(error.message);
     });
 }
 
@@ -242,6 +242,7 @@ function resetForm(){
     editingStudentId = null;
     submitButton.textContent = "학생 등록"
     cancelButton.style.display = "none";
+    clearMessages();
 }
 
 function updateStudent(studentId, studentData){
@@ -262,13 +263,13 @@ function updateStudent(studentId, studentData){
         return response.json();
     })
     .then((result) => {
-        alert("학생이 성공적으로 수정되었습니다!");
+        showSuccess("학생이 성공적으로 수정되었습니다!");
         resetForm();
         loadStudents();
     })
     .catch((error) => {
         console.log("error: ",error);
-        alert(error.message);
+        showError(error.message);
     });
 }
 
